@@ -24,12 +24,47 @@ npx mcp-uber
 
 ## Setup
 
-1. Get Uber API credentials:
-   - Go to [Uber Developer Dashboard](https://developer.uber.com/)
-   - Create a new app
-   - Copy your Client ID and Client Secret
+### Step 1: Create an Uber Developer Account
 
-2. Set up environment variables (see Configuration section below)
+1. Go to [Uber Developer Dashboard](https://developer.uber.com/)
+2. Click "Sign in" and either:
+   - Use an existing Uber rider/driver account
+   - Create a new account specifically for development
+   
+**💡 Tip:** For organizations, create an email alias (e.g., dev@yourcompany.com) instead of using a personal account for easier ownership transfer.
+
+### Step 2: Create a New App
+
+1. In the [Developer Dashboard](https://developer.uber.com/dashboard), click "Create App" (top right corner)
+2. Fill in the required information:
+   - **App Name**: Your application name
+   - **Description**: Brief description of what your app does
+3. Click "Create"
+
+### Step 3: Get Your API Credentials
+
+1. Navigate to your app in the dashboard
+2. Go to the **Auth** tab
+3. You'll find:
+   - **Client ID**: Public identifier for your app
+   - **Client Secret**: Private key (keep this secure!)
+   - **Server Token**: For server-side requests
+
+### Step 4: Configure OAuth Settings
+
+1. In the **Auth** tab, add your redirect URI:
+   - For local testing: `http://localhost:3000/callback`
+   - For production: Your actual callback URL
+2. Select required scopes:
+   - `profile` - User's basic profile information
+   - `request` - Request rides on user's behalf
+   - `ride_request` - View and manage active ride requests
+
+**⚠️ Note:** The `request` scope is privileged and requires Uber approval for production use. During development, your account can use it without approval.
+
+### Step 5: Set Up Environment Variables
+
+Create environment variables with your credentials (see Configuration section below)
 
 ## Usage with Claude Desktop
 
@@ -100,8 +135,62 @@ The MCP server requires the following environment variables:
 - `UBER_REDIRECT_URI`: OAuth callback URL (default: `http://localhost:3000/callback`)
 - `UBER_ENVIRONMENT`: Either `sandbox` or `production` (default: `sandbox`)
 
-## Notes
+## Testing Your Integration
 
-- This server uses the Uber API sandbox by default
-- In production, implement proper token storage (not in-memory)
-- Ensure your redirect URI is registered in your Uber app settings
+1. **Use sandbox mode** for testing:
+   - Set `UBER_ENVIRONMENT=sandbox` in your environment
+   - Sandbox mode simulates ride requests without real drivers
+   - Perfect for development and testing
+
+2. **Test the OAuth flow**:
+   - Use the `uber_get_auth_url` tool to get an authorization URL
+   - Visit the URL and authorize your app
+   - After authorization, Uber will redirect to your callback URL with a code
+   - Exchange the code for an access token (you'll need to set up your own callback handler)
+   - Use `uber_set_access_token` to store the token in the MCP server
+
+3. **Setting up a callback handler**:
+   - For testing, you can use a simple Express server (see `examples/oauth-server.js` in the [GitHub repo](https://github.com/199-biotechnologies/mcp-uber))
+   - For production, implement a secure callback handler in your application
+   - The callback URL must match exactly what's configured in your Uber app
+
+## Important Notes
+
+### Sandbox vs Production
+
+- **Sandbox Mode** (default):
+  - Simulated rides and drivers
+  - No real charges
+  - Perfect for testing
+  - Limited to your developer account
+
+- **Production Mode**:
+  - Real rides and charges
+  - Requires Uber approval for privileged scopes
+  - Must pass Uber's review process
+
+### Security Best Practices
+
+1. **Never commit credentials**: Keep your Client Secret secure
+2. **Use environment variables**: Don't hardcode credentials
+3. **Implement proper token storage**: The current in-memory storage is for demo only
+4. **Validate redirect URIs**: Ensure your callback URLs are properly configured
+
+### API Limitations
+
+- Rate limits apply (check Uber's documentation)
+- Privileged scopes require approval for production use
+- Sandbox mode has some limitations compared to production
+
+### Troubleshooting
+
+- **"Invalid scope" error**: Your app needs approval for privileged scopes in production
+- **"Invalid redirect URI"**: Make sure your redirect URI exactly matches what's configured in the Uber dashboard
+- **"Unauthorized" errors**: Check that your access token is valid and not expired
+
+## Resources
+
+- [Uber API Documentation](https://developer.uber.com/docs)
+- [OAuth 2.0 Guide](https://developer.uber.com/docs/riders/ride-requests/tutorials/api/introduction-oauth)
+- [Sandbox Testing Guide](https://developer.uber.com/docs/riders/ride-requests/tutorials/api/sandbox)
+- [API Status Page](https://status.uber.com/)
