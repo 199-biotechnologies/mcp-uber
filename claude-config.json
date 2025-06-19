@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "uber": {
+      "command": "node",
+      "args": ["./dist/index.js"],
+      "env": {
+        "UBER_CLIENT_ID": "YOUR_CLIENT_ID_HERE",
+        "UBER_CLIENT_SECRET": "YOUR_CLIENT_SECRET_HERE",
+        "UBER_REDIRECT_URI": "http://localhost:3000/callback",
+        "UBER_ENVIRONMENT": "sandbox"
+      }
+    }
+  }
+}

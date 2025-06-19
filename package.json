@@ -1,0 +1,38 @@
+{
+  "name": "mcp-uber",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-uber": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "prepare": "npm run build",
+    "oauth-server": "tsx src/oauth-callback-server.ts"
+  },
+  "keywords": [
+    "mcp",
+    "uber",
+    "ride-sharing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "MCP server for booking Uber rides",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.3",
+    "@types/express": "^5.0.3",
+    "axios": "^1.10.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}
