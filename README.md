@@ -2,6 +2,10 @@
 
 An MCP (Model Context Protocol) server for booking Uber rides through AI assistants.
 
+<a href="https://glama.ai/mcp/servers/@199-biotechnologies/mcp-uber">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@199-biotechnologies/mcp-uber/badge" alt="Uber Server MCP server" />
+</a>
+
 ## Features
 
 - OAuth 2.0 authentication with Uber
