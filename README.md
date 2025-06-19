@@ -10,38 +10,57 @@ An MCP (Model Context Protocol) server for booking Uber rides through AI assista
 - Check ride status
 - Cancel rides
 
+## Installation
+
+### Using npm (global installation)
+```bash
+npm install -g mcp-uber
+```
+
+### Using npx (no installation required)
+```bash
+npx mcp-uber
+```
+
 ## Setup
 
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Create a `.env` file based on `.env.example`:
-```bash
-cp .env.example .env
-```
-
-3. Get Uber API credentials:
+1. Get Uber API credentials:
    - Go to [Uber Developer Dashboard](https://developer.uber.com/)
    - Create a new app
-   - Copy your Client ID and Client Secret to `.env`
+   - Copy your Client ID and Client Secret
 
-4. Build the server:
-```bash
-npm run build
-```
+2. Set up environment variables (see Configuration section below)
 
 ## Usage with Claude Desktop
 
+### Using npm (global installation)
 Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "uber": {
-      "command": "node",
-      "args": ["/path/to/mcp-uber/dist/index.js"],
+      "command": "mcp-uber",
+      "env": {
+        "UBER_CLIENT_ID": "your_client_id",
+        "UBER_CLIENT_SECRET": "your_client_secret",
+        "UBER_REDIRECT_URI": "http://localhost:3000/callback",
+        "UBER_ENVIRONMENT": "sandbox"
+      }
+    }
+  }
+}
+```
+
+### Using npx
+Add to your Claude Desktop configuration:
+
+```json
+{
+  "mcpServers": {
+    "uber": {
+      "command": "npx",
+      "args": ["mcp-uber"],
       "env": {
         "UBER_CLIENT_ID": "your_client_id",
         "UBER_CLIENT_SECRET": "your_client_secret",
@@ -70,12 +89,16 @@ Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/
 4. Use `uber_set_access_token` to store the token
 5. Now you can make API calls
 
-## Development
+## Configuration
 
-Run in development mode:
-```bash
-npm run dev
-```
+### Environment Variables
+
+The MCP server requires the following environment variables:
+
+- `UBER_CLIENT_ID`: Your Uber app client ID
+- `UBER_CLIENT_SECRET`: Your Uber app client secret  
+- `UBER_REDIRECT_URI`: OAuth callback URL (default: `http://localhost:3000/callback`)
+- `UBER_ENVIRONMENT`: Either `sandbox` or `production` (default: `sandbox`)
 
 ## Notes
 
