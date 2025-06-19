@@ -6,6 +6,14 @@
   "bin": {
     "mcp-uber": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/199-biotechnologies/mcp-uber.git"
+  },
+  "homepage": "https://github.com/199-biotechnologies/mcp-uber#readme",
+  "bugs": {
+    "url": "https://github.com/199-biotechnologies/mcp-uber/issues"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/index.ts",

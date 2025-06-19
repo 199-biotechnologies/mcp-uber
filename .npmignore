@@ -1,0 +1,11 @@
+src/
+.env
+.env.example
+.git/
+.gitignore
+tsconfig.json
+node_modules/
+*.log
+.DS_Store
+claude-config.json
+examples/
